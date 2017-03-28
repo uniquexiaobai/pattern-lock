@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<title>Lock</title>
 	<style>
 		/* reset */
@@ -75,11 +75,11 @@
 		.controls input {
 			margin-right: 15px;
 		}
-		#lock {
-			border: 1px solid red;
-		}
-		#lockInfo {
+		main {
 			text-align: center;
+		}
+		#lock {
+			/*border: 1px solid red;*/
 		}
 	</style>
 </head>
@@ -90,20 +90,16 @@
 
 	<main>
 		<canvas id="lock" width="300" height="300"></canvas>
-		<p id="lockInfo">密码正确</p>
+		<p id="lockInfo">请输入手势密码</p>
 	</main>
 
 	<footer>
 		<div class="controls">
-			<label for="setPasswd"><input type="radio" id="setPasswd" name="setPasswd">设置密码</label>
-			<label for="checkPasswd"><input type="radio" id="checkPasswd" name="checkPasswd">检查密码</label>
+			<label for="setPasswd"><input type="radio" id="setPasswd" name="radio" checked>设置密码</label>
+			<label for="checkPasswd"><input type="radio" id="checkPasswd" name="radio">检查密码</label>
 		</div>
 	</footer>
 
-	<script src="app.js"></script>
-	<script>
-		// console.log(new Lock())
-		new Lock().init()
-	</script>
+	<script src="main.js"></script>
 </body>
 </html>
