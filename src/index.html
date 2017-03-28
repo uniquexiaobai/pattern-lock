@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>Lock</title>
+	<link rel="stylesheet" href="main.css">
+</head>
+<body>
+	<header class="title">
+		<h1>手势密码</h1>
+	</header>
+
+	<main>
+		<canvas id="lock" width="300" height="300"></canvas>
+		<p id="lockInfo">请输入手势密码</p>
+	</main>
+
+	<footer>
+		<div class="controls">
+			<label for="setPasswd"><input type="radio" id="setPasswd" name="radio" checked>设置密码</label>
+			<label for="checkPasswd"><input type="radio" id="checkPasswd" name="radio">检查密码</label>
+		</div>
+	</footer>
+
+	<script src="main.js"></script>
+</body>
+</html>

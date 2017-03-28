@@ -4,9 +4,20 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "browser-sync start --server --files '*.*'"
+    "start": "gulp",
+    "build": "gulp build",
+    "deploy": "gulp deploy"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.18.8",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-clean-css": "^3.0.4",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-uglify": "^2.1.2",
+    "vinyl-ftp": "^0.6.0"
+  }
 }

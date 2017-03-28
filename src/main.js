@@ -13,7 +13,16 @@
 		this.passwdList = [];
 		this.touching = false;
 
-		console.log(options);
+		options = options || {};
+		this.options = {
+			nodeFillStyle: options.nodeFillStyle || '#fff',
+			nodeBorderStyle: options.nodeBorderStyle || '#bcbcbc',
+			nodeBorderWidth: options.nodeBorderWidth || 2,
+			activeNodeFillStyle: options.activeNodeFillStyle || '#FFA726',
+			activeNodeBorderStyle: options.activeNodeBorderStyle || '#E36265',
+			lineStyle: options.lineStyle || '#f00',
+			lineWidth: options.lineWidth || 2,
+		}
 
 		this.initNodes();
 		this.bindEvent();
@@ -23,6 +32,7 @@
 	var LockProto = Lock.prototype;
 
 	LockProto.bindEvent = function () {
+		var options = this.options;
 		var canvas = this.canvas;
 		var self = this;
 
@@ -33,7 +43,7 @@
 
 			for (var i = 0; i < nodeList.length; i++) {
 				if (isNodeTouched(touchPosition, nodeList[i], radius)) {
-					drawNode(self.context, nodeList[i].x, nodeList[i].y, radius, '#FFA726', '#E36265');
+					drawNode(self.context, nodeList[i].x, nodeList[i].y, radius, options.activeNodeFillStyle, options.activeNodeBorderStyle, options.nodeBorderWidth);
 					self.activeNodeList.push(nodeList[i]);
 					self.touching = true;
 				}
@@ -119,14 +129,14 @@
 				self.switchStatusToCheck(passwd);
 				setLockInfo('请输入手势密码解锁');
 			} else {
-				self.switchStatusToSet();
-				setLockInfo('密码不存在，请先设置');
+				setPasswdRadioElement.click();
 			}
 		});
 	}
 
 	LockProto.initNodes = function () {
 		this.nodeList = [];
+		var options = this.options;
 		var canvas = this.canvas;
 		var radius = this.radius;
 		var ctx = this.context;
@@ -146,7 +156,7 @@
 
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		for (i = 0; i < nodeList.length; i++) {
-			drawNode(ctx, nodeList[i].x, nodeList[i].y, radius, '#fff', '#bcbcbc');
+			drawNode(ctx, nodeList[i].x, nodeList[i].y, radius, options.nodeFillStyle, options.nodeBorderStyle, options.nodeBorderWidth);
 		}
 	}
 
@@ -156,21 +166,23 @@
 	}
 
 	LockProto.update = function (touchPosition) {
+		var options = this.options;
+		var radius = this.radius;
 		var ctx = this.context;
 		var nodeList = this.nodeList;
 		var activeNodeList = this.activeNodeList;
 
 		this.initNodes();
 		for (var i = 0; i < nodeList.length; i++) {
-			if (isNodeTouched(touchPosition, nodeList[i], this.radius) && !isNodeActived(activeNodeList, nodeList[i])) {
+			if (isNodeTouched(touchPosition, nodeList[i], radius) && !isNodeActived(activeNodeList, nodeList[i])) {
 				activeNodeList.push(nodeList[i]);
 			}
 		}
 
 		for (i = 0; i < activeNodeList.length; i++) {
-			drawNode(ctx, activeNodeList[i].x, activeNodeList[i].y, this.radius, '#FFA726', '#E36265');
+			drawNode(ctx, activeNodeList[i].x, activeNodeList[i].y, radius, options.activeNodeFillStyle, options.activeNodeBorderStyle, options.nodeBorderWidth);
 		}
-		drawLines(ctx, activeNodeList.concat(touchPosition), 'red');
+		drawLines(ctx, activeNodeList.concat(touchPosition), options.lineStyle, options.lineWidth);
 	}
 
 	LockProto.initStatus = function () {
@@ -187,9 +199,9 @@
 		setRadioChecked(checkPasswdRadioElement);
 	}
 
-	function drawLines(ctx, points, strokeStyle) {
-		ctx.lineWidth = 2;
-		ctx.strokeStyle = strokeStyle;
+	function drawLines(ctx, points, lineStyle, lineWidth) {
+		ctx.strokeStyle = lineStyle;
+		ctx.lineWidth = lineWidth;
 		ctx.beginPath();
 		ctx.moveTo(points[0].x, points[0].y);
 		for (var i = 0; i < points.length; i++) {
@@ -199,12 +211,12 @@
 		ctx.closePath();
 	}
 
-	function drawNode(ctx, x, y, r, fillStyle, strokeStyle) {
+	function drawNode(ctx, x, y, r, fillStyle, borderStyle, borderWidth) {
 		ctx.fillStyle = fillStyle;
-		ctx.strokeStyle = strokeStyle;
-		ctx.lineWidth = 2;
+		ctx.strokeStyle = borderStyle;
+		ctx.lineWidth = borderWidth;
 		ctx.beginPath();
-		ctx.arc(x, y, r - 2, 0, Math.PI * 2);
+		ctx.arc(x, y, r - borderWidth, 0, Math.PI * 2);
 		ctx.arc(x, y, r, 0, Math.PI * 2);
 		ctx.closePath();
 		ctx.fill();
@@ -270,4 +282,14 @@
 	
 }(this));
 
-new Lock();
+/* optional configure */
+var options = {
+	// nodeFillStyle: '#fff',
+	// nodeBorderStyle: '#bcbcbc',
+	// nodeBorderWidth: 2,
+	// activeNodeFillStyle: '#FFA726',
+	// activeNodeBorderStyle: '#E36265',
+	// lineStyle: '#f00',
+	// lineWidth: 2,
+}
+new Lock(options);
